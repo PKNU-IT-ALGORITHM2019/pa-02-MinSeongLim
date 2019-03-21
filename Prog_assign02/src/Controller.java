@@ -73,11 +73,11 @@ public class Controller {
 		
 		for(int i = 0 ; i<N; i++)
 		{
-			col[k] = i;	
-			if(k!=0)
-				method(k+1,dis + get_distance(k, k-1));
-			else
-				method(k+1,dis);
+			col[k] = i;
+			double num = 0;
+			if(k>0)
+				num = get_distance(k, k-1);
+			method(k+1,dis+num);
 		}
 		
 	}
