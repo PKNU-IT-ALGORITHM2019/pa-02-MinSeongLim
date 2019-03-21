@@ -23,7 +23,7 @@ public class Controller {
 				col = new int[N];
 				min = 0;
 				read(sc,N);				
-				fun(0);
+				method(0,0);
 				print();				
 				sc.close();
 			} catch (FileNotFoundException e) {
@@ -48,45 +48,43 @@ public class Controller {
 		System.out.println("");
 	}
 	
-	private void fun(int k)
-	{
+	private void method(int k, double dis)
+	{		
 		if(((System.currentTimeMillis()-start)/1000.0) >= 1800 )
 			return;
+		
 		for(int i = 0; i<k-1; i++)
-			if(col[i] == col[k-1])
+			if(col[i] == col[k-1])				
 				return;
+		
+		if(min!=0 && dis>=min)
+			return;
+		
 		if(k==N)
 		{
-			compare();
+			dis += get_distance(0, k-1);
+			if(min==0 || min>dis)
+			{
+				min = dis;
+				arr = col.clone();
+			}
 			return;
 		}
-		for(int i = 0; i < N; i++)
+		
+		for(int i = 0 ; i<N; i++)
 		{
-			col[k] = i;
-			fun(k+1);
-		}
-	}
-
-	private void compare()
-	{
-		double dis = 0;
-		for(int i = 0; i<N; i++)
-		{
-			if(i<N-1)
-				dis += distance(i, i+1);
+			col[k] = i;	
+			if(k!=0)
+				method(k+1,dis + get_distance(k, k-1));
 			else
-				dis += distance(0,i);
+				method(k+1,dis);
 		}
-		if(min ==0 || dis<min)
-		{
-			arr = col.clone();
-			min = dis;
-		}
+		
 	}
-
-	private double distance(int i, int j) {
-		double x = Math.abs(node.get(col[i]).x - node.get(col[j]).x);
-		double y = Math.abs(node.get(col[i]).y - node.get(col[j]).y);
+	
+	private double get_distance(int i, int j) {		
+		double x = node.get(col[i]).x - node.get(col[j]).x;
+		double y = node.get(col[i]).y - node.get(col[j]).y;		
 		return Math.sqrt(x*x + y*y);
 	}
 }
